@@ -1,6 +1,4 @@
-package es1;
-
-import e1.Board;
+package e1;
 
 public class BoardImpl implements Board {
     private final int rows;

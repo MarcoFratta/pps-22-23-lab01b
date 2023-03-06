@@ -1,51 +1,45 @@
 package e1;
 
-import java.util.*;
-
 public class LogicsImpl implements Logics {
 	
 	private final Pair<Integer,Integer> pawn;
 	private Pair<Integer,Integer> knight;
-	private final Random random = new Random();
-	private final int size;
-	 
-    public LogicsImpl(final int size){
-    	this.size = size;
-        this.pawn = this.randomEmptyPosition();
-        this.knight = this.randomEmptyPosition();	
-    }
+	private final Board board;
+	private final GameStrategy strategy;
 
-	public LogicsImpl(final Pair<Integer, Integer> pawn, final Pair<Integer, Integer> knight, final int size) {
-		this.size = size;
-    	if (this.isInvalidPosition(pawn.getX(), pawn.getY()) ||
-				this.isInvalidPosition(knight.getX(), knight.getY())) {
+
+	public LogicsImpl(final GameStrategy strategy, final int size) {
+		this.board = new BoardImpl(size, size);
+		this.strategy = strategy;
+		this.pawn = strategy.createPawn();
+		this.knight = strategy.createKnight();
+    	if (this.positionIsNotValid(this.pawn)
+				||this.positionIsNotValid(this.knight)
+				|| this.pawn.equals(this.knight)) {
 			throw new IllegalArgumentException();
 		}
-		this.pawn = pawn;
-		this.knight = knight;
 
 	}
 
-	private boolean isInvalidPosition(final int x, final int y){
-    	return x < 0 || y < 0 || x >= this.size || y >= this.size;
+	public LogicsImpl(final int size) {
+		this(new GameStrategyBuilderImpl().randomGeneration(size,size), size);
 	}
 
-	private final Pair<Integer,Integer> randomEmptyPosition(){
-    	final Pair<Integer,Integer> pos = new Pair<>(this.random.nextInt(this.size),this.random.nextInt(this.size));
-    	// the recursive call below prevents clash with an existing pawn
-    	return this.pawn!=null && this.pawn.equals(pos) ? this.randomEmptyPosition() : pos;
-    }
-    
+	private boolean positionIsNotValid(final Integer x, final Integer y) {
+		return !this.board.isValidPosition(x, y);
+	}
+	private boolean positionIsNotValid(final Pair<Integer, Integer> p){
+    	return this.positionIsNotValid(p.getX(),p.getY());
+	}
+
 	@Override
 	public boolean hit(final int row, final int col) {
-		if (row<0 || col<0 || row >= this.size || col >= this.size) {
+		if (this.positionIsNotValid(row, col)) {
 			throw new IndexOutOfBoundsException();
 		}
-		// Below a compact way to express allowed moves for the knight
-		final int x = row-this.knight.getX();
-		final int y = col-this.knight.getY();
-		if (x!=0 && y!=0 && Math.abs(x)+Math.abs(y)==3) {
-			this.knight = new Pair<>(row,col);
+		final var nextPosition = new Pair<>(row,col);
+		if(this.strategy.isMovementAllowed(this.knight,nextPosition)){
+			this.knight = nextPosition;
 			return this.pawn.equals(this.knight);
 		}
 		return false;

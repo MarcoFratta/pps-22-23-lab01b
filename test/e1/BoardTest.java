@@ -1,6 +1,5 @@
-package es1;
+package e1;
 
-import e1.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,5 @@
-package es1;
+package e1;
 
-import e1.Logics;
-import e1.LogicsImpl;
-import e1.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +18,8 @@ public class LogicTest {
 
     @BeforeEach
     void beforeEach() {
-        this.logics = new LogicsImpl(SIZE);
+        final GameStrategyBuilder builder = new GameStrategyBuilderImpl();
+        this.logics = new LogicsImpl(builder.randomGeneration(SIZE,SIZE),SIZE);
     }
 
     @Test
@@ -43,14 +41,16 @@ public class LogicTest {
         final var pawnPosition = new  Pair<>(-1,-5);
         final var knightPosition = new Pair<>(-7,-3);
         assertThrows(IllegalArgumentException.class,
-                () -> this.logics = new LogicsImpl(pawnPosition,knightPosition, size));
+                () -> this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                        .fixedGeneration(knightPosition,pawnPosition), size));
     }
 
     @Test
     void testCanMove(){
         final var knightPosition = new  Pair<>(0,0);
         final var destination = new Pair<>(knightPosition.getX() + 2, knightPosition.getY() + 1);
-        this.logics = new LogicsImpl(new Pair<>(0,0),knightPosition, SIZE);
+        this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                .fixedGeneration(knightPosition,new Pair<>(1,0)), SIZE);
         this.logics.hit(destination.getX(),destination.getY());
         assertTrue(this.logics.hasKnight(destination.getX(),destination.getY()));
 
@@ -82,9 +82,20 @@ public class LogicTest {
     void testCanHit(){
         final var pawnPosition = new  Pair<>(3,1);
         final var knightPosition = new Pair<>(4,3);
-        this.logics = new LogicsImpl(pawnPosition,knightPosition, SIZE);
+        this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                .fixedGeneration(knightPosition,pawnPosition), SIZE);
         assertTrue(this.logics.hit(pawnPosition.getX(), pawnPosition.getY()));
     }
+
+    @Test
+    void testKnightAndPawnSamePosition(){
+        final var pawnPosition = new  Pair<>(3,1);
+        assertThrows(IllegalArgumentException.class, () ->
+                this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                .fixedGeneration(pawnPosition,pawnPosition), SIZE));
+
+    }
+
 
 
     private List<Pair<Integer, Integer>> getValidPosition(final Set<Pair<Integer, Integer>> possibleMoves) {
@@ -104,11 +115,6 @@ public class LogicTest {
             }
         }
         return list;
-    }
-    private boolean isValidKnightMovement(final Pair<Integer,Integer> knightPosition, final Pair<Integer,Integer> nextPosition){
-        final int x = nextPosition.getX()-knightPosition.getX();
-        final int y = nextPosition.getY()-knightPosition.getY();
-        return (x!=0 && y!=0 && Math.abs(x)+Math.abs(y)==3);
     }
     private int countFeatureOnAllBoard(final Predicate<Pair<Integer, Integer>> condition) {
         int x = 0;
