@@ -6,11 +6,9 @@ import e1.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +31,6 @@ public class LogicTest {
     }
 
 
-
     @Test
     void testHasKnight(){
         final int knightNumber = this.countFeatureOnAllBoard((p) -> this.logics.hasKnight(p.getX(),p.getY()));
@@ -41,21 +38,41 @@ public class LogicTest {
     }
 
     @Test
+    void testInvalidConstructor(){
+        final int size = 4;
+        final var pawnPosition = new  Pair<>(-1,-5);
+        final var knightPosition = new Pair<>(-7,-3);
+        assertThrows(IllegalArgumentException.class,
+                () -> this.logics = new LogicsImpl(pawnPosition,knightPosition, size));
+    }
+
+    @Test
     void testCanMove(){
-        final var knightPosition = this.findOnAllBoard(p -> this.logics.hasPawn(p.getX(),p.getY()));
+        final var knightPosition = new  Pair<>(0,0);
+        final var destination = new Pair<>(knightPosition.getX() + 2, knightPosition.getY() + 1);
+        this.logics = new LogicsImpl(new Pair<>(0,0),knightPosition, SIZE);
+        this.logics.hit(destination.getX(),destination.getY());
+        assertTrue(this.logics.hasKnight(destination.getX(),destination.getY()));
+
+    }
+
+
+    @Test
+    void testCanMoveAllDirections(){
+        final var knightPosition = this.findOnAllBoard(p -> this.logics.hasKnight(p.getX(),p.getY()));
         final var possibleMoves = this.getPossibleMoves(knightPosition);
-        for (final Pair<Integer, Integer> position: possibleMoves.stream()
-                .filter(this::isValidPosition).toList()) {
+        for (final var position: this.getValidPosition(possibleMoves)) {
             this.logics.hit(position.getX(), position.getY());
             assertTrue(this.logics.hasKnight(position.getX(),position.getY()));
+            this.logics.hit(knightPosition.getX(),knightPosition.getY());
         }
     }
     @Test
     void testFailNotValidMove(){
-        final var knightPosition = this.findOnAllBoard(p -> this.logics.hasPawn(p.getX(),p.getY()));
+        final var knightPosition = this.findOnAllBoard(p -> this.logics.hasKnight(p.getX(),p.getY()));
         final var possibleMoves = this.getPossibleMoves(knightPosition);
-        for (final Pair<Integer, Integer> position: possibleMoves.stream()
-                .filter(p-> !this.isValidPosition(p)).toList()) {
+        this.getValidPosition(possibleMoves).forEach(possibleMoves::remove);
+        for (final Pair<Integer, Integer> position: this.getValidPosition(possibleMoves)) {
             assertThrows(IndexOutOfBoundsException.class,
                     () -> this.logics.hit(position.getX(), position.getY()));
         }
@@ -70,19 +87,20 @@ public class LogicTest {
     }
 
 
-
+    private List<Pair<Integer, Integer>> getValidPosition(final Set<Pair<Integer, Integer>> possibleMoves) {
+        return possibleMoves.stream()
+                .filter(this::isValidPosition).toList();
+    }
 
     private boolean isValidPosition(final Pair<Integer, Integer> p) {
         return !(p.getX()<0 || p.getY()<0 || p.getX() >= SIZE || p.getY() >= SIZE);
     }
     private Set<Pair<Integer, Integer>> getPossibleMoves(final Pair<Integer, Integer> knightPosition) {
         final Set<Pair<Integer, Integer>> list = new HashSet<>();
-        for (int i = knightPosition.getX() - 2; i <= knightPosition.getX() + 2; i ++) {
-            for(int j = knightPosition.getY() - 2; j <= knightPosition.getY() + 2; j++){
-                final var x = new Pair<>(knightPosition.getX() + i,knightPosition.getY() + j);
-                if(this.isValidKnightMovement(knightPosition, x)){
-                    list.add(x);
-                }
+        for (int i = - 2; i <= 2; i +=4) {
+            for(int j = -1 ; j <= 1; j+=2){
+                list.add(new Pair<>(knightPosition.getX() + i,knightPosition.getY() + j));
+                list.add(new Pair<>(knightPosition.getX() + j,knightPosition.getY() + i));
             }
         }
         return list;
