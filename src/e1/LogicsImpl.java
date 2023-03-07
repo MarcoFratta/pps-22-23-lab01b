@@ -18,18 +18,10 @@ public class LogicsImpl implements Logics {
 				|| this.pawn.equals(this.knight)) {
 			throw new IllegalArgumentException();
 		}
-
 	}
 
 	public LogicsImpl(final int size) {
 		this(new GameStrategyFactoryImpl().randomGeneration(size,size), size);
-	}
-
-	private boolean positionIsNotValid(final Integer x, final Integer y) {
-		return !this.board.isValidPosition(x, y);
-	}
-	private boolean positionIsNotValid(final Pair<Integer, Integer> p){
-    	return this.positionIsNotValid(p.getX(),p.getY());
 	}
 
 	@Override
@@ -53,5 +45,12 @@ public class LogicsImpl implements Logics {
 	@Override
 	public boolean hasPawn(final int row, final int col) {
 		return this.pawn.equals(new Pair<>(row,col));
+	}
+
+	private boolean positionIsNotValid(final Integer x, final Integer y) {
+		return !this.board.isValidPosition(x, y);
+	}
+	private boolean positionIsNotValid(final Pair<Integer, Integer> p){
+		return this.positionIsNotValid(p.getX(),p.getY());
 	}
 }
