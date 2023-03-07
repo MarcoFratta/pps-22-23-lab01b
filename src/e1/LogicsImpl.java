@@ -22,7 +22,7 @@ public class LogicsImpl implements Logics {
 	}
 
 	public LogicsImpl(final int size) {
-		this(new GameStrategyBuilderImpl().randomGeneration(size,size), size);
+		this(new GameStrategyFactoryImpl().randomGeneration(size,size), size);
 	}
 
 	private boolean positionIsNotValid(final Integer x, final Integer y) {

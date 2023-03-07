@@ -2,7 +2,7 @@ package e1;
 
 import java.util.Random;
 
-public class GameStrategyBuilderImpl implements GameStrategyBuilder {
+public class GameStrategyFactoryImpl implements GameStrategyFactory {
     @Override
     public GameStrategy randomGeneration(final int rows, final int columns) {
         return new KnightGameStrategy() {
@@ -44,7 +44,7 @@ public class GameStrategyBuilderImpl implements GameStrategyBuilder {
 
     private abstract static class KnightGameStrategy implements GameStrategy{
 
-        public static final int MAX_MOVES = 3;
+        private static final int MAX_MOVES = 3;
 
         @Override
         public boolean isMovementAllowed(final Pair<Integer, Integer> from, final Pair<Integer,Integer> to) {

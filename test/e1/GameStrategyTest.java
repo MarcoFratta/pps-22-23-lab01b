@@ -13,7 +13,7 @@ public class GameStrategyTest {
 
     @BeforeEach
     void beforeEach(){
-        final GameStrategyBuilder builder = new GameStrategyBuilderImpl();
+        final GameStrategyFactory builder = new GameStrategyFactoryImpl();
         this.strategy =builder.randomGeneration(SIZE, SIZE);
     }
 
@@ -21,14 +21,19 @@ public class GameStrategyTest {
     @Test
     void testCreateKnight(){
         final var knight = this.strategy.createKnight();
-        assertTrue(knight.getX() >= 0 && knight.getX() < SIZE);
-        assertTrue(knight.getY() >= 0 && knight.getY() < SIZE);
+        assertTrue(this.isInsideBoard(knight.getX()));
+        assertTrue(this.isInsideBoard(knight.getY()));
     }
+
+    private boolean isInsideBoard(final Integer x) {
+        return x >= 0 && x < SIZE;
+    }
+
     @Test
     void testCreatePawn(){
         final var pawn = this.strategy.createPawn();
-        assertTrue(pawn.getX() >= 0 && pawn.getX() < SIZE);
-        assertTrue(pawn.getY() >= 0 && pawn.getY() < SIZE);
+        assertTrue(this.isInsideBoard(pawn.getX()));
+        assertTrue(this.isInsideBoard(pawn.getY()));
     }
 
     @Test

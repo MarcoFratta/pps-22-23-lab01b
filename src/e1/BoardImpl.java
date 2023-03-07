@@ -11,12 +11,12 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public int getRowsNumber() {
+    public int getRows() {
         return this.rows;
     }
 
     @Override
-    public int getColumnsNumber() {
+    public int getColumns() {
         return this.columns;
     }
 

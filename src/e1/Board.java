@@ -1,7 +1,7 @@
 package e1;
 
 public interface Board {
-    int getRowsNumber();
-    int getColumnsNumber();
+    int getRows();
+    int getColumns();
     boolean isValidPosition(int x, int y);
 }

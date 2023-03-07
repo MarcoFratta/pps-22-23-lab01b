@@ -18,7 +18,7 @@ public class LogicTest {
 
     @BeforeEach
     void beforeEach() {
-        final GameStrategyBuilder builder = new GameStrategyBuilderImpl();
+        final GameStrategyFactory builder = new GameStrategyFactoryImpl();
         this.logics = new LogicsImpl(builder.randomGeneration(SIZE,SIZE),SIZE);
     }
 
@@ -41,7 +41,7 @@ public class LogicTest {
         final var pawnPosition = new  Pair<>(-1,-5);
         final var knightPosition = new Pair<>(-7,-3);
         assertThrows(IllegalArgumentException.class,
-                () -> this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                () -> this.logics = new LogicsImpl(new GameStrategyFactoryImpl()
                         .fixedGeneration(knightPosition,pawnPosition), size));
     }
 
@@ -49,7 +49,7 @@ public class LogicTest {
     void testCanMove(){
         final var knightPosition = new  Pair<>(0,0);
         final var destination = new Pair<>(knightPosition.getX() + 2, knightPosition.getY() + 1);
-        this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+        this.logics = new LogicsImpl(new GameStrategyFactoryImpl()
                 .fixedGeneration(knightPosition,new Pair<>(1,0)), SIZE);
         this.logics.hit(destination.getX(),destination.getY());
         assertTrue(this.logics.hasKnight(destination.getX(),destination.getY()));
@@ -82,7 +82,7 @@ public class LogicTest {
     void testCanHit(){
         final var pawnPosition = new  Pair<>(3,1);
         final var knightPosition = new Pair<>(4,3);
-        this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+        this.logics = new LogicsImpl(new GameStrategyFactoryImpl()
                 .fixedGeneration(knightPosition,pawnPosition), SIZE);
         assertTrue(this.logics.hit(pawnPosition.getX(), pawnPosition.getY()));
     }
@@ -91,7 +91,7 @@ public class LogicTest {
     void testKnightAndPawnSamePosition(){
         final var pawnPosition = new  Pair<>(3,1);
         assertThrows(IllegalArgumentException.class, () ->
-                this.logics = new LogicsImpl(new GameStrategyBuilderImpl()
+                this.logics = new LogicsImpl(new GameStrategyFactoryImpl()
                 .fixedGeneration(pawnPosition,pawnPosition), SIZE));
 
     }

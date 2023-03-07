@@ -18,18 +18,18 @@ public class BoardTest {
 
     @Test
     void testBoardRowsSize(){
-        assertEquals(SIZE, this.board.getRowsNumber());
+        assertEquals(SIZE, this.board.getRows());
     }
 
     @Test
     void testBoardColumnsSize(){
         final int columns = 6;
         this.board = new BoardImpl(SIZE, columns);
-        assertEquals(columns, this.board.getColumnsNumber());
+        assertEquals(columns, this.board.getColumns());
     }
 
     @Test
-    void testValidPosition(){
+    void testValidPositions(){
         assertFalse(this.board.isValidPosition(-1,-1));
         assertTrue(this.board.isValidPosition(2,2));
         assertFalse(this.board.isValidPosition(SIZE, SIZE + 1));
