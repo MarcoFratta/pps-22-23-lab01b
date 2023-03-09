@@ -7,7 +7,9 @@ public class MinedGrid extends AbstractActionGrid {
 
     private final Set<Pair<Integer,Integer>> clickedSet;
 
-    public MinedGrid(final Grid grid) {
+
+
+    public MinedGrid(final Grid grid, final int mines) {
         super(grid);
         this.clickedSet = new HashSet<>();
     }
