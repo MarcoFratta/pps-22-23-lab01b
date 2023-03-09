@@ -5,14 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MinedGridTest extends GridTest{
+public class SelectableGridTest extends GridTest{
 
-    private static final int MINES = 5;
     protected ActionGrid actionGrid;
     @BeforeEach
     void beforeEach(){
         super.beforeEach();
-        this.actionGrid = new MinedGrid(this.grid, MINES);
+        this.actionGrid = new SelectableGrid(this.grid);
     }
 
     @Test

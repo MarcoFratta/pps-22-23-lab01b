@@ -26,14 +26,15 @@ public class GUI extends JFrame {
         final ActionListener onClick = (e)->{
             final JButton bt = (JButton)e.getSource();
             final Pair<Integer,Integer> pos = this.buttons.get(bt);
-            final boolean aMineWasFound = false; // call the logic here to tell it that cell at 'pos' has been seleced
+
+            final boolean aMineWasFound = this.logics.hit(pos.getX(), pos.getY()); // call the logic here to tell it that cell at 'pos' has been seleced
             if (aMineWasFound) {
                 this.quitGame();
                 JOptionPane.showMessageDialog(this, "You lost!!");
             } else {
                 this.drawBoard();
             }
-            final boolean isThereVictory = false; // call the logic here to ask if there is victory
+            final boolean isThereVictory = this.logics.isWin(); // call the logic here to ask if there is victory
             if (isThereVictory){
                 this.quitGame();
                 JOptionPane.showMessageDialog(this, "You won!!");
@@ -69,18 +70,22 @@ public class GUI extends JFrame {
     private void quitGame() {
         this.drawBoard();
     	for (final var entry: this.buttons.entrySet()) {
-            // call the logic here
-            // if this button is a mine, draw it "*"
-            // disable the button
+            final var p = entry.getValue();
+            if(this.logics.hasMine(p.getX(), p.getY())) {
+                entry.getKey().setText("*");
+            }
+            entry.getKey().setEnabled(false);
     	}
     }
 
     private void drawBoard() {
         for (final var entry: this.buttons.entrySet()) {
-            // call the logic here
-            // if this button is a cell with counter, put the number
-            // if this button has a flag, put the flag
+            final var p = entry.getValue();
+            final var button = entry.getKey();
+            if(this.logics.isSelected(p.getX(), p.getY())) {
+                button.setEnabled(false);
+            }
+            }
     	}
-    }
-    
+
 }

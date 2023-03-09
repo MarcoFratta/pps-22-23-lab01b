@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RandomGridTest extends MinedGridTest{
+public class RandomGridTest extends SelectableGridTest {
 
 
     private static final int MINES = 5;
@@ -19,7 +19,7 @@ public class RandomGridTest extends MinedGridTest{
 
     @Test
     void testRandomInit(){
-        assertEquals(MINES, this.countChecked(this.actionGrid));
+        assertEquals(MINES, Utils.countChecked(this.actionGrid));
     }
 
     @Test
@@ -34,17 +34,5 @@ public class RandomGridTest extends MinedGridTest{
                 () ->  super.actionGrid = new RandomGrid(this.actionGrid, -1));
     }
 
-
-    private int countChecked(final ActionGrid grid) {
-        int count = 0;
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if(grid.check(i,j)){
-                    count ++;
-                }
-            }
-        }
-        return count;
-    }
 
 }

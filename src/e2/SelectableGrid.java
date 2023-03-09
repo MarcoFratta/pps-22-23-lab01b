@@ -3,13 +3,13 @@ package e2;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MinedGrid extends AbstractActionGrid {
+public class SelectableGrid extends AbstractActionGrid {
 
     private final Set<Pair<Integer,Integer>> clickedSet;
 
 
 
-    public MinedGrid(final Grid grid, final int mines) {
+    public SelectableGrid(final Grid grid) {
         super(grid);
         this.clickedSet = new HashSet<>();
     }
@@ -27,9 +27,6 @@ public class MinedGrid extends AbstractActionGrid {
     @Override
     public void undoMethod(final int row, final int column) {
         final var p = new Pair<>(row, column);
-        if(!this.clickedSet.contains(p)){
-            throw new IllegalArgumentException();
-        }
-        this.clickedSet.remove(p);
+        System.out.println("removing: " + this.clickedSet.remove(p));
     }
 }
