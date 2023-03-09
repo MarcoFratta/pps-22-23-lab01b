@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
 
     public static final int SIZE = 5;
-    private Board board;
+    protected Board board;
 
 
     @BeforeEach
@@ -18,14 +18,14 @@ public class BoardTest {
 
     @Test
     void testBoardRowsSize(){
-        assertEquals(SIZE, this.board.getRows());
+        assertEquals(SIZE, this.board.rows());
     }
 
     @Test
     void testBoardColumnsSize(){
         final int columns = 6;
         this.board = new BoardImpl(SIZE, columns);
-        assertEquals(columns, this.board.getColumns());
+        assertEquals(columns, this.board.columns());
     }
 
     @Test
