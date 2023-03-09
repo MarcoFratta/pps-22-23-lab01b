@@ -26,7 +26,6 @@ public class SelectableGrid extends AbstractActionGrid {
 
     @Override
     public void undoMethod(final int row, final int column) {
-        final var p = new Pair<>(row, column);
-        System.out.println("removing: " + this.clickedSet.remove(p));
+        this.clickedSet.remove(new Pair<>(row, column));
     }
 }

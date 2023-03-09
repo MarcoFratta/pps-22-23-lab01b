@@ -46,9 +46,10 @@ public class GUI extends JFrame {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 final JButton bt = (JButton)e.getSource();
+                System.out.println("right clicked");
                 if (bt.isEnabled()){
                     final Pair<Integer,Integer> pos = GUI.this.buttons.get(bt);
-                    // call the logic here to put/remove a flag
+                    GUI.this.logics.flag(pos.getX(), pos.getY());
                 }
                 GUI.this.drawBoard();
             }
@@ -82,10 +83,19 @@ public class GUI extends JFrame {
         for (final var entry: this.buttons.entrySet()) {
             final var p = entry.getValue();
             final var button = entry.getKey();
-            if(this.logics.isSelected(p.getX(), p.getY())) {
+            final var adjacentMines = this.logics.getAdjacentMines(p.getX(), p.getY());
+           adjacentMines.ifPresent( o -> System.out.println("mines: " + o));
+            if(adjacentMines.isPresent()) {
+                button.setText(String.valueOf(adjacentMines.get()));
                 button.setEnabled(false);
+            } else if (this.logics.hasFlag(p.getX(), p.getY())) {
+                button.setText("F");
+            } else if(this.logics.hasMine(p.getX(), p.getY())) {
+                entry.getKey().setText("*");
+            } else {
+                button.setText("");
             }
-            }
+        }
     	}
 
 }

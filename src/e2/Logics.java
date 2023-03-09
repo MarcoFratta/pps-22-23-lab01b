@@ -1,10 +1,12 @@
 package e2;
 
+import java.util.Optional;
+
 public interface Logics {
 
-    boolean hasMine(int row, int column);
-
     boolean isWin();
+
+    boolean hasMine(int row, int column);
 
     boolean hit(int row, int column);
 
@@ -12,5 +14,5 @@ public interface Logics {
 
     boolean hasFlag(int row, int column);
 
-    boolean isSelected(int row, int column);
+    Optional<Integer> getAdjacentMines(int row, int column);
 }

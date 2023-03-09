@@ -3,6 +3,8 @@ package e2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogicTest {
@@ -25,7 +27,7 @@ public class LogicTest {
     @Test
     void testCanCreateMines(){
         assertEquals(MINES_NUMBERS,
-                Utils.countMines(this.logics::hasMine, SIZE));
+                Utils.countOnAllGrid(this.logics::hasMine, SIZE));
     }
 
     @Test
@@ -56,12 +58,19 @@ public class LogicTest {
 
     @Test
     void testSelected(){
-        final int row = 3;
-        final int column = 2;
-        assertFalse(this.logics.isSelected(row,column));
+        this.logics = new LogicsImpl(3, 3*3);
+        final int row = 1;
+        final int column = 1;
+        assertEquals(Optional.empty(),this.logics.getAdjacentMines(row,column));
         this.logics.hit(row,column);
-        assertTrue(this.logics.isSelected(row,column));
+        assertEquals(Optional.of(8),this.logics.getAdjacentMines(row,column));
     }
 
-
+    @Test
+    void testRecursiveSelection(){
+        this.logics = new LogicsImpl(SIZE,0);
+        this.logics.hit(0,0);
+        assertEquals(0,Utils.countOnAllGrid((x,y) ->
+                this.logics.getAdjacentMines(x,y).equals(Optional.empty()), SIZE));
+    }
 }

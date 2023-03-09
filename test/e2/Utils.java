@@ -16,7 +16,7 @@ public class Utils {
         return count;
     }
 
-    public static int countMines(final BiPredicate<Integer,Integer> predicate, final int size) {
+    public static int countOnAllGrid(final BiPredicate<Integer,Integer> predicate, final int size) {
         int count = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
