@@ -24,13 +24,11 @@ public class SelectableGridTest extends GridTest{
 
 
     @Test
-    void testFailOnInvalidPosition(){
+    void testFalseOnInvalidPosition(){
         final int x = -1;
         final int y = SIZE;
-        assertThrows(IllegalArgumentException.class,
-                () -> this.actionGrid.doAction(x,y));
-        assertThrows(IllegalArgumentException.class,
-                () -> this.actionGrid.check(x,y));
+        this.actionGrid.doAction(x,y);
+        assertFalse(this.actionGrid.check(x,y));
     }
 
     @Test

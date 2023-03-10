@@ -7,14 +7,14 @@ public class RandomGrid extends AbstractActionGrid{
     private final ActionGrid actionGrid;
     protected RandomGrid(final ActionGrid grid, final int mines) {
         super(grid);
-        if(mines > grid.rows() * grid.columns() || mines < 0){
-            throw new IllegalArgumentException();
-        }
         this.actionGrid = grid;
         this.init(mines);
     }
 
     private void init(final int mines) {
+        if(mines > this.grid.rows() * this.grid.columns() || mines < 0){
+            throw new IllegalArgumentException();
+        }
         final var r = new Random();
         for (int i = 0; i < mines ; i++) {
             final int x = r.nextInt(this.grid.rows());

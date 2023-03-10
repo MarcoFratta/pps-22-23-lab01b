@@ -26,6 +26,7 @@ public class FlagGridTest extends GridTest{
     void canRemoveFlag(){
         final int pos = 0;
         this.actionGrid.doAction(pos,pos);
+        assertTrue(this.actionGrid.check(pos,pos));
         this.actionGrid.doAction(pos,pos);
         assertFalse(this.actionGrid.check(pos,pos));
     }

@@ -8,18 +8,21 @@ public class LogicsImpl implements Logics {
     private final ActionGrid minedGrid;
     private final ActionGrid flagGrid;
     private final ActionGrid clickedGrid;
+    private final int selecionsNumberToWin;
 
     public LogicsImpl(final int size, final int mines) {
         final Grid grid = new GridImpl(size, size);
         this.minedGrid = new RandomGrid(new SelectableGrid(grid), mines);
         this.clickedGrid = new SelectableGrid(grid);
-        this.flagGrid = new SelectableGrid(grid);
+        this.flagGrid = new FlagGrid(grid);
+        this.selecionsNumberToWin = size * size - mines;
     }
 
     @Override
     public boolean isWin() {
-        return this.clickedGrid.stream().findAny().isPresent() && this.clickedGrid.stream()
-                .noneMatch(cell -> this.minedGrid.check(cell.getRow(), cell.getColumn()));
+        return this.clickedGrid.stream().count() == this.selecionsNumberToWin &&
+                this.clickedGrid.stream()
+                                .noneMatch(cell -> this.minedGrid.check(cell.getRow(), cell.getColumn()));
     }
 
     @Override
@@ -32,25 +35,9 @@ public class LogicsImpl implements Logics {
         return this.minedGrid.check(row, column);
     }
 
-    private void recursiveCallCheck(final int row, final int column) {
-        this.getAdjacentMines(row, column).ifPresent(minesNumber -> {
-            if(minesNumber == NO_ADJACENT_MINES){
-                this.clickedGrid.getCell(row, column)
-                        .getAdjacent().stream()
-                        .filter(p -> this.clickedGrid.isValidPosition(p.getX(),p.getY()))
-                        .filter(p -> !this.clickedGrid.check(p.getX(),p.getY()))
-                        .forEach(p -> this.hit(p.getX(),p.getY()));
-            }
-        });
-    }
-
     @Override
     public boolean hasMine(final int row, final int column) {
-        try {
-            return this.minedGrid.check(row, column);
-        }catch (final Exception ignored){
-            return false;
-        }
+        return this.minedGrid.check(row, column);
     }
 
     @Override
@@ -65,13 +52,21 @@ public class LogicsImpl implements Logics {
 
     @Override
     public Optional<Integer> getAdjacentMines(final int row, final int column) {
-        return this.clickedGrid.check(row,column) ?
-                this.countAdjacentMines(row, column) : Optional.empty();
+        return this.clickedGrid.check(row,column) ? this.countAdjacentMines(row, column) : Optional.empty();
     }
 
     private Optional<Integer> countAdjacentMines(final int row, final int column) {
-        return Optional.of(Math.toIntExact(this.clickedGrid.getCell(row, column)
-                .getAdjacent().stream()
-                .filter(p -> this.hasMine(p.getX(), p.getY())).count()));
+        return Optional.of((int) this.clickedGrid.getCell(row, column).getAdjacent()
+                .stream().filter(p -> this.hasMine(p.getX(), p.getY())).count());
+    }
+
+    private void recursiveCallCheck(final int row, final int column) {
+        this.getAdjacentMines(row, column).ifPresent(minesNumber -> {
+            if(minesNumber == NO_ADJACENT_MINES){
+                this.clickedGrid.getCell(row, column).getAdjacent().stream()
+                        .filter(p -> !this.clickedGrid.check(p.getX(),p.getY()))
+                        .forEach(p -> this.hit(p.getX(),p.getY()));
+            }
+        });
     }
 }

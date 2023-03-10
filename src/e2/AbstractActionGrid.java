@@ -26,18 +26,14 @@ public abstract class AbstractActionGrid implements ActionGrid{
     }
     @Override
     public void doAction(final int row, final int column) {
-        this.checkValidity(row,column);
-        this.actionMethod(row,column);
+        if(this.grid.isValidPosition(row,column)){
+            this.actionMethod(row,column);
+        }
     }
     @Override
     public boolean check(final int row, final int column) {
-        this.checkValidity(row,column);
-        return this.checkMethod(row,column);
-    }
-    private void checkValidity(final int row, final int column) {
-        if(!this.grid.isValidPosition(row,column)){
-            throw new IllegalArgumentException();
-        }
+        return this.grid.isValidPosition(row,column) &&
+                this.checkMethod(row,column);
     }
 
     @Override

@@ -97,4 +97,12 @@ public class LogicTest {
         }},size);
         assertTrue(this.logics.isWin());
     }
+
+    @Test
+    void testNotWinAfterAMine(){
+        final var minePosition = Utils.find((x, y) -> this.logics.hasMine(x, y), SIZE);
+        assert minePosition != null;
+        this.logics.hit(minePosition.getX(), minePosition.getY());
+        assertFalse(this.logics.isWin());
+    }
 }

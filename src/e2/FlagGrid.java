@@ -16,9 +16,9 @@ public class FlagGrid extends AbstractActionGrid {
     protected void actionMethod(final int row, final int column) {
         final var p = new Pair<>(row,column);
         if(this.flagged.contains(p)) {
-            this.flagged.add(p);
-        } else {
             this.flagged.remove(p);
+        } else {
+            this.flagged.add(p);
         }
     }
 
