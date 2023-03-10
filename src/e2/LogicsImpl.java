@@ -4,25 +4,25 @@ import java.util.Optional;
 
 public class LogicsImpl implements Logics {
 
-    public static final int NO_ADJACENT_MINES = 0;
+    private static final int NO_ADJACENT_MINES = 0;
     private final ActionGrid minedGrid;
     private final ActionGrid flagGrid;
     private final ActionGrid clickedGrid;
-    private final int selecionsNumberToWin;
+    private final int numberOfCellToWin;
 
     public LogicsImpl(final int size, final int mines) {
         final Grid grid = new GridImpl(size, size);
         this.minedGrid = new RandomGrid(new SelectableGrid(grid), mines);
         this.clickedGrid = new SelectableGrid(grid);
         this.flagGrid = new FlagGrid(grid);
-        this.selecionsNumberToWin = size * size - mines;
+        this.numberOfCellToWin = size * size - mines;
     }
 
     @Override
     public boolean isWin() {
-        return this.clickedGrid.stream().count() == this.selecionsNumberToWin &&
+        return this.clickedGrid.stream().count() == this.numberOfCellToWin &&
                 this.clickedGrid.stream()
-                                .noneMatch(cell -> this.minedGrid.check(cell.getRow(), cell.getColumn()));
+                .noneMatch(cell -> this.minedGrid.check(cell.getRow(), cell.getColumn()));
     }
 
     @Override

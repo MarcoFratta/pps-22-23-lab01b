@@ -15,12 +15,12 @@ public class SelectableGrid extends AbstractActionGrid {
     }
 
     @Override
-    public void actionMethod(final int row, final int column) {
+    protected void actionMethod(final int row, final int column) {
         this.clickedSet.add(new Pair<>(row,column));
     }
 
     @Override
-    public boolean checkMethod(final int row, final int column) {
+    protected boolean checkMethod(final int row, final int column) {
         return this.clickedSet.contains(new Pair<>(row,column));
     }
 }
