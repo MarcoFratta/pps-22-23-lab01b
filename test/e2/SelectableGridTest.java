@@ -22,14 +22,6 @@ public class SelectableGridTest extends GridTest{
         assertTrue(this.actionGrid.check(x,y));
     }
 
-    @Test
-    void testCanRemoveMine(){
-        final int x = 2;
-        final int y = 1;
-        this.actionGrid.doAction(x,y);
-        this.actionGrid.undoAction(x,y);
-        assertFalse(this.actionGrid.check(x,y));
-    }
 
     @Test
     void testFailOnInvalidPosition(){
@@ -38,8 +30,14 @@ public class SelectableGridTest extends GridTest{
         assertThrows(IllegalArgumentException.class,
                 () -> this.actionGrid.doAction(x,y));
         assertThrows(IllegalArgumentException.class,
-                () -> this.actionGrid.undoAction(x,y));
-        assertThrows(IllegalArgumentException.class,
                 () -> this.actionGrid.check(x,y));
     }
+
+    @Test
+    void testStreamIsFiltered(){
+        final int position = 0;
+            this.actionGrid.doAction(position,position);
+            assertEquals(1,this.actionGrid.stream().count());
+        }
+
 }

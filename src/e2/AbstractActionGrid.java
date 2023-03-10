@@ -1,5 +1,7 @@
 package e2;
 
+import java.util.stream.Stream;
+
 public abstract class AbstractActionGrid implements ActionGrid{
 
     protected Grid grid;
@@ -32,18 +34,17 @@ public abstract class AbstractActionGrid implements ActionGrid{
         this.checkValidity(row,column);
         return this.checkMethod(row,column);
     }
-    @Override
-    public void undoAction(final int row, final int column) {
-        this.checkValidity(row,column);
-        this.undoMethod(row,column);
-    }
     private void checkValidity(final int row, final int column) {
         if(!this.grid.isValidPosition(row,column)){
             throw new IllegalArgumentException();
         }
     }
 
+    @Override
+    public Stream<Cell> stream() {
+        return this.grid.stream().filter(c -> this.check(c.getRow(),c.getColumn()));
+    }
+
     protected abstract void actionMethod(int row, int column);
     protected abstract boolean checkMethod(int row, int column);
-    protected abstract void undoMethod(int row, int column);
 }

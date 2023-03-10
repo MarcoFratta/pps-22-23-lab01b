@@ -1,5 +1,6 @@
 package e2;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 
 public class Utils {
@@ -26,5 +27,25 @@ public class Utils {
             }
         }
         return count;
+    }
+
+    public static Pair<Integer,Integer> find(final BiPredicate<Integer, Integer> predicate, final int size) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(predicate.test(i,j)){
+                    return new Pair<>(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void foreachCellDo(final BiConsumer<Integer, Integer> action, final int size){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                action.accept(i,j);
+
+            }
+        }
     }
 }

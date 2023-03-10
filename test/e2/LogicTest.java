@@ -3,6 +3,7 @@ package e2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,5 +73,28 @@ public class LogicTest {
         this.logics.hit(0,0);
         assertEquals(0,Utils.countOnAllGrid((x,y) ->
                 this.logics.getAdjacentMines(x,y).equals(Optional.empty()), SIZE));
+    }
+
+    @Test
+    void testFailOnDoubleClicking(){
+        this.logics.hit(0,0);
+        assertThrows(IllegalArgumentException.class ,
+                () -> this.logics.hit(0,0));
+    }
+
+    @Test
+    void testCanWinAfterClickingAll() {
+        final int size = 5;
+        this.logics = new LogicsImpl(size, 1);
+        final var minePosition = Utils.find((x, y) -> this.logics.hasMine(x, y), size);
+        assert minePosition != null;
+        Utils.foreachCellDo((i,j) ->{
+        if(!Objects.equals(i, minePosition.getX()) ||
+                !Objects.equals(j, minePosition.getY())) {
+            try {
+                this.logics.hit(i, j);
+            }catch (final Exception ignored){}
+        }},size);
+        assertTrue(this.logics.isWin());
     }
 }

@@ -5,6 +5,7 @@ import e1.BoardImpl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class GridImpl implements Grid {
 
@@ -45,5 +46,16 @@ public class GridImpl implements Grid {
             throw new IllegalArgumentException();
         }
         return this.map.get(new Pair<>(x,y));
+    }
+
+    @Override
+    public Stream<Cell> stream() {
+        final Stream.Builder<Cell> stream = Stream.builder();
+        for (int i = 0; i < this.rows(); i++) {
+            for (int j = 0; j < this.columns(); j++) {
+                stream.add(this.getCell(i,j));
+            }
+        }
+        return stream.build();
     }
 }

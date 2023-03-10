@@ -36,9 +36,4 @@ public class RandomGrid extends AbstractActionGrid{
     protected boolean checkMethod(final int row, final int column) {
         return this.actionGrid.check(row,column);
     }
-
-    @Override
-    protected void undoMethod(final int row, final int column) {
-        this.actionGrid.undoAction(row,column);
-    }
 }

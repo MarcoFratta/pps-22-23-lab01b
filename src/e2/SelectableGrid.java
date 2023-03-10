@@ -23,9 +23,4 @@ public class SelectableGrid extends AbstractActionGrid {
     public boolean checkMethod(final int row, final int column) {
         return this.clickedSet.contains(new Pair<>(row,column));
     }
-
-    @Override
-    public void undoMethod(final int row, final int column) {
-        this.clickedSet.remove(new Pair<>(row, column));
-    }
 }
