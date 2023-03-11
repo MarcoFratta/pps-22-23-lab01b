@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FlagGridTest extends GridTest{
+public class SwitchableGridTest extends GridTest{
 
     private ActionGrid actionGrid;
     @BeforeEach
     void beforeEach() {
         super.beforeEach();
-        this.actionGrid = new FlagGrid(this.grid);
+        this.actionGrid = new SwitchableGrid(this.grid);
     }
 
     @Test

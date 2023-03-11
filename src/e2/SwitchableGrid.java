@@ -3,11 +3,11 @@ package e2;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FlagGrid extends AbstractActionGrid {
+public class SwitchableGrid extends AbstractActionGrid {
 
     private final Set<Pair<Integer,Integer>> flagged;
 
-    protected FlagGrid(final Grid grid) {
+    protected SwitchableGrid(final Grid grid) {
         super(grid);
         this.flagged = new HashSet<>();
     }

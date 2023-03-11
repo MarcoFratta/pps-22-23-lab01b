@@ -73,6 +73,8 @@ public class GUI extends JFrame {
             final var p = entry.getValue();
             if(this.logics.hasMine(p.getX(), p.getY())) {
                 entry.getKey().setText("*");
+            } else {
+                entry.getKey().setText("");
             }
             entry.getKey().setEnabled(false);
     	}

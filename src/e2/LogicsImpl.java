@@ -14,7 +14,7 @@ public class LogicsImpl implements Logics {
         final Grid grid = new GridImpl(size, size);
         this.minedGrid = new RandomGrid(new SelectableGrid(grid), mines);
         this.clickedGrid = new SelectableGrid(grid);
-        this.flagGrid = new FlagGrid(grid);
+        this.flagGrid = new SwitchableGrid(grid);
         this.numberOfCellToWin = size * size - mines;
     }
 
